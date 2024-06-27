@@ -1,9 +1,20 @@
 // Home.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../style/Home.css'
 import { MdInsertEmoticon } from "react-icons/md";
 
 const Home = () => {
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log('Scrolled');
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <div className="container-fluid p-0 mt-lg-5 bg-secondary">
       <section className="services bg-secondary text-center py-5 p-3">
