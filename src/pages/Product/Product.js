@@ -1,50 +1,52 @@
-// Product.js
 import React, { useEffect, useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { Button } from 'react-bootstrap';
+import { FaHeartCircleCheck } from "react-icons/fa6";
+
+import { useDispatch, useSelector } from 'react-redux';
 import '../../style/Product.css';
 import 'animate.css';
 import AddModal from './Addmodal';
+import { productLoading } from '../../redux/Product/action';
 
 const Product = () => {
+  const dispatch = useDispatch();
+  const { data: productData, loading } = useSelector(state => state.product);
+
+  // Local state to manage liked products
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [toast,setToast] = useState(false)
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+
+  const [toast, setToast] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Function to toggle modal
   const toggleModal = () => setShowModal(!showModal);
 
+  // Dispatch productLoading action only once when component mounts
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        const data = await response.json();
-        // Initialize liked state for each product
-        const productsWithLikes = data.map(product => ({ ...product, liked: false }));
-        setProducts(productsWithLikes);
-        setLoading(false); // Set loading to false after data is fetched
-      } catch (error) {
-        console.error('Error fetching products:', error);
-        setLoading(false); // Set loading to false even if there's an error
-      }
-    };
-    fetchProducts();
-  }, []);
+    dispatch(productLoading());
+  }, [dispatch]);
+
+  // Initialize products state when productData changes
+  useEffect(() => {
+    if (productData.length > 0) {
+      const productsWithLikes = productData.map(product => ({ ...product, liked: false }));
+      setProducts(productsWithLikes);
+    }
+  }, [productData]);
+
   const toggleLike = (index) => {
-    setToast(true)
     setProducts(prevProducts => {
-        // Create a copy of the products array
-        const updatedProducts = [...prevProducts];
-        // Toggle the liked state of the specific product
-        updatedProducts[index] = {
-            ...updatedProducts[index],
-            liked: !updatedProducts[index].liked
-        };
-        return updatedProducts;
+      const updatedProducts = [...prevProducts];
+      updatedProducts[index] = {
+        ...updatedProducts[index],
+        liked: !updatedProducts[index].liked,
+      };
+      return updatedProducts;
     });
-};
+    setToast(true);
+    setTimeout(() => setToast(false), 5000); // Hide toast after 3 seconds
+  };
 
   return (
     <div className="container-fluid product-body bg-secondary">
@@ -59,44 +61,42 @@ const Product = () => {
             </div>
           </div>
         ) : (
-            products?.map((item, i) => (
-                <div className="col-3 p-3" key={i}>
-                    <div className="card- bg-white rounded-3 text-center p-3">
-                        <div className="card-body mx-auto py-3">
-                            <img src={item.image} alt="" style={{ height: '80px' }} />
-                            <h4>{item.title.slice(0, 10)}</h4>
-                            <p>{item.price}$</p>
-                            <p>{item.description.slice(0, 60)}</p>
-                            <div className="card-btn">
-                                <button className="btn bg-none text-white" onClick={toggleModal}>Add</button>
-                                <span className='ms-5' onClick={() => toggleLike(i)}>
-                                    {item.liked ? <FaHeart className='text-danger fs-5' /> : <FaRegHeart />}
-                                </span>
-                            </div>
-
-
-                        </div>
-                    </div>
+          products.map((item, i) => (
+            <div className="col-3 p-3" key={i}>
+              <div className="card bg-white rounded-3 text-center p-3" style={{height:'300px'}}>
+                <div className="card-body mx-auto py-3">
+                  <img src={item.image} alt="" style={{ height: '80px' }} />
+                  <h4>{item.title.slice(0, 10)}</h4>
+                  <p>{item.price}$</p>
+                  <p>{item.description.slice(0, 60)}</p>
+                  <div className="card-btn">
+                    <button className="btn bg-none text-white" onClick={toggleModal}>Add</button>
+                    <span className='ms-5' onClick={() => toggleLike(i)}>
+                      {item.liked ? <FaHeart className='text-danger fs-5' /> : <FaRegHeart />}
+                    </span>
+                  </div>
                 </div>
-            ))
+              </div>
+            </div>
+          ))
         )}
       </div>
-      {/* Modal component */}
       <AddModal show={showModal} handleClose={toggleModal} />
-      {toast && <div className="position-fixed bottom-0 end-0 p-3" style={{zIndex:'11'}}>
-  <div id="liveToast" className="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-    <div className="toast-header">
-      <img src="..." className="rounded me-2" alt="..."/>
-      <strong class="me-auto">Bootstrap</strong>
-      <small>11 mins ago</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div className="toast-body">
-      Hello, world! This is a toast message.
-    </div>
-  </div>
-</div>}
-      
+      {toast && (
+        <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: '11' }}>
+          <div id="liveToast" className="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
+              <img src="..." className="rounded me-2" alt="..." />
+              <strong className="me-auto">Bootstrap</strong>
+              <small>Just now</small>
+              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div className="toast-body">
+              You liked this product!
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
