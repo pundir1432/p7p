@@ -1,10 +1,21 @@
 // src/components/Dashboard.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
 import '../style/Dashboard.css'; // Import the CSS file
 
 const Dashboard = () => {
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('Window resized');
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   const data = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
