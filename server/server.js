@@ -3,7 +3,7 @@ const app = express();
 require("dotenv").config();
 require("./config/db.config");
 const cors = require("cors");
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 var corsOptions = {
     origin: "http://localhost:3000", 
