@@ -7,27 +7,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../../style/Product.css';
 import 'animate.css';
 import AddModal from './Addmodal';
-import { productLoading } from '../../redux/Product/action';
+import { productLoading,addToCart } from '../../redux/Product/action';
 
 const Product = () => {
   const dispatch = useDispatch();
   const { data: productData, loading } = useSelector(state => state.product);
 
-  // Local state to manage liked products
   const [products, setProducts] = useState([]);
 
   const [toast, setToast] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  // Function to toggle modal
   const toggleModal = () => setShowModal(!showModal);
 
-  // Dispatch productLoading action only once when component mounts
   useEffect(() => {
     dispatch(productLoading());
   }, [dispatch]);
 
-  // Initialize products state when productData changes
+ 
+
   useEffect(() => {
     if (productData.length > 0) {
       const productsWithLikes = productData.map(product => ({ ...product, liked: false }));
@@ -35,9 +33,11 @@ const Product = () => {
     }
   }, [productData]);
 
-  const toggleLike = (index) => {
+  const toggleLike = (index,product) => {
+    dispatch(addToCart(product));
+
     setProducts(prevProducts => {
-      const updatedProducts = [...prevProducts];
+      const updatedProducts =  [...prevProducts];
       updatedProducts[index] = {
         ...updatedProducts[index],
         liked: !updatedProducts[index].liked,
@@ -45,7 +45,7 @@ const Product = () => {
       return updatedProducts;
     });
     setToast(true);
-    setTimeout(() => setToast(false), 5000); // Hide toast after 3 seconds
+    setTimeout(() => setToast(false), 5000); 
   };
 
   return (
@@ -71,8 +71,9 @@ const Product = () => {
                   <p>{item.description.slice(0, 60)}</p>
                   <div className="card-btn">
                     <button className="btn bg-none text-white" onClick={toggleModal}>Add</button>
-                    <span className='ms-5' onClick={() => toggleLike(i)}>
-                      {item.liked ? <FaHeart className='text-danger fs-5' /> : <FaRegHeart />}
+                    {/* <span className="ms-5 fs-4" onClick={() => toggleLike(item)}> <FaHeartCircleCheck /></span> */}
+                    <span className='ms-5' onClick={() => toggleLike(i,item)}>
+                      {item.liked ? <FaHeart  className='text-danger fs-5' /> : <FaHeartCircleCheck />}
                     </span>
                   </div>
                 </div>

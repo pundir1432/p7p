@@ -10,6 +10,7 @@ import ProtectedRoute from './componets/PrivateRoute';
 import Signup from './componets/login/Signup';
 import Login from './componets/login/Login';
 import { AuthProvider } from './componets/AuthContext';
+import Account from './pages/Account/Account';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function Main() {
             <Route path="/reset-password" element={<Resetpassword />} /> */}
             <Route path="/home" element={<ProtectedRoute Component={Home} />} />
             <Route path="/product" element={<ProtectedRoute Component={ProductPage} />} />
+            <Route path="/account" element={<ProtectedRoute Component={Account} />} />
             <Route path="/dashboard" element={<ProtectedRoute Component={Dashboard} />} />
             <Route path="/button" element={<ProtectedRoute Component={ButtonSite} />} />
          

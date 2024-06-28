@@ -11,9 +11,6 @@ const userModel = new Schema(
             type: String,
             required: true
         },
-       
-        
-              
     },
     { versionKey: false, timestamps: true }
 );
