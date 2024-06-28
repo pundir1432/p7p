@@ -1,11 +1,15 @@
-import { PRODUCT_LOADING, PRODUCT_SUCCESS, PRODUCT_ERROR } from './constaint';
+import { PRODUCT_LOADING, PRODUCT_SUCCESS, PRODUCT_ERROR,INCREMENT_COUNT } from './constaint';
 const initialState = {
     data: [],
     loading: false,
     error: null,
   };
+
+const initialStateCount = {
+    count: 0,
+  };
   
-  const productReducer = (state = initialState, action) => {
+ export const productReducer = (state = initialState, action) => {
     switch (action.type) {
       case PRODUCT_LOADING:
         return {
@@ -31,5 +35,16 @@ const initialState = {
     }
   };
   
-  export default productReducer;
+ export const countReducer = (state = initialStateCount, action) => {
+    switch (action.type) {
+      case INCREMENT_COUNT:
+        return {
+          ...state,
+          count: state.count + 1,
+        };
+      default:
+        return state;
+    }
+  };
+  
   

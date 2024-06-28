@@ -5,6 +5,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { loginRequest } from '../../redux/Login/action';
+import { logi_img } from '../../assets/image';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -29,9 +30,14 @@ const Login = () => {
   return (
       <Container fluid className='bg-light'>
         <Row>
-          <Col lg={12} md={12} className='mt-lg-5 d-flex justify-content-center p-2' style={{ height: '93vh' }}>
-            <div className="form-login p-5 d-flex justify-content-center" style={{ height: '100vh', maxHeight: '600px' }}>
-              <div className="login w-100 p-0 me-5">
+       <Col lg={12} md={12}>
+        <Row>
+        <Col lg={6} md={6} className='mt-lg-5 d-flex justify-content-end p-0'>
+          <img className='login-img' src={logi_img} alt="" />
+        </Col>
+          <Col lg={6} md={6} className='mt-lg-5 d-flex p-0 justify-content-start ' style={{ height: '99vh' }}>
+            <div className="  form-login p-5 d-flex justify-content-center" style={{ height: '100vh', maxHeight: '600px' }}>
+              <div className="login w-100 p-0 me-2">
                 <h2 className='text-center text-white animate__animated animate__bounce'>SignIn</h2>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Form.Group controlId="formEmail">
@@ -78,6 +84,8 @@ const Login = () => {
               </div>
             </div>
           </Col>
+        </Row>
+       </Col>
         </Row>
       </Container>
   );
