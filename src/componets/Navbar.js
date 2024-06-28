@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -7,10 +8,11 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
+import Badge from '@mui/material/Badge'; 
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { profile_img } from '../assets/image';
 import 'animate.css';
 import '../style/Navbar.css';
-import { useSelector } from 'react-redux';
 import { FaCartShopping } from "react-icons/fa6";
 
 
@@ -21,6 +23,8 @@ const Navbar = () => {
   const count = useSelector(state => state.count.count);
 
   const navigate = useNavigate();
+
+  const cartItemCount = useSelector((state) => state.cart.items.length);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -39,6 +43,9 @@ const Navbar = () => {
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
+  const accountGoing =() =>{
+    navigate('/account')
+  }
 
   return (
     <>
@@ -97,9 +104,12 @@ const Navbar = () => {
               </li>
             </ul>
             <form className="d-flex" role="search">
-              <Box sx={{ flexGrow: 0 }}>
+              <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
+              
                 <Tooltip title="Open account">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <IconButton onClick={handleOpenUserMenu}
+
+                   sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp" src={profile_img} />
                     <FaCartShopping /> <span style={{fontSize:'14px'}}>{count}</span>
                   </IconButton>
@@ -123,7 +133,8 @@ const Navbar = () => {
                   {settings.map((setting) => (
                     <MenuItem
                       key={setting}
-                      onClick={setting === 'Logout' ? handleLogout : handleCloseUserMenu}
+                      onClick={setting === 'Logout' ? handleLogout : handleCloseUserMenu || setting ==='account' ? accountGoing : ''}
+
                     >
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>

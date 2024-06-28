@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../../style/Product.css';
 import 'animate.css';
 import AddModal from './Addmodal';
-import { incrementCount, productLoading } from '../../redux/Product/action';
+import { productLoading,addToCart ,incrementCount} from '../../redux/Product/action';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Tooltip } from 'react-bootstrap';
@@ -34,6 +34,8 @@ const Product = () => {
     dispatch(productLoading());
   }, [dispatch]);
 
+ 
+
   useEffect(() => {
     if (productData.length > 0) {
       const productsWithLikes = productData.map(product => ({ ...product, liked: false }));
@@ -41,9 +43,11 @@ const Product = () => {
     }
   }, [productData]);
 
-  const toggleLike = (index) => {
+  const toggleLike = (index,product) => {
+    dispatch(addToCart(product));
+
     setProducts(prevProducts => {
-      const updatedProducts = [...prevProducts];
+      const updatedProducts =  [...prevProducts];
       updatedProducts[index] = {
         ...updatedProducts[index],
         liked: !updatedProducts[index].liked,
@@ -51,7 +55,7 @@ const Product = () => {
       return updatedProducts;
     });
     setToast(true);
-    setTimeout(() => setToast(false), 5000); // Hide toast after 5 seconds
+    setTimeout(() => setToast(false), 5000); 
   };
 
   const top100Films = [
@@ -103,10 +107,13 @@ const Product = () => {
                   <p>{item.price}$</p>
                   <p>{item.description.slice(0, 60)}</p>
                   <div className="card-btn">
-                    <button className="btn bg-none text-white" onClick={() => addProductHandle(item)}>Add</button>
-                    <span className="ms-5" onClick={() => toggleLike(i)}>
-                      {item.liked ? <FaHeart className="text-danger fs-5" /> : <FaHeartCircleCheck />}
-                    </span>
+                  <button className="btn bg-none text-white" onClick={() => addProductHandle(item)}>Add</button>
+
+                    {/* <span className="ms-5 fs-4" onClick={() => toggleLike(item)}> <FaHeartCircleCheck /></span> */}
+                    <span className='ms-5' onClick={() => toggleLike(i,item)}>
+                      {item.liked ? <FaHeart  className='text-danger fs-5' /> : <FaHeartCircleCheck />}
+                      </span>
+                  
                   </div>
                 </div>
               </div>
