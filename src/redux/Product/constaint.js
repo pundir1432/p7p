@@ -3,3 +3,4 @@ export const PRODUCT_SUCCESS = 'PRODUCT_SUCCESS';
 export const PRODUCT_ERROR = 'PRODUCT_ERROR';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+export const INCREMENT_COUNT = 'INCREMENT_COUNT';

@@ -13,11 +13,14 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { profile_img } from '../assets/image';
 import 'animate.css';
 import '../style/Navbar.css';
+import { FaCartShopping } from "react-icons/fa6";
+
 
 const Navbar = () => {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [activeLink, setActiveLink] = useState('');
+  const count = useSelector(state => state.count.count);
 
   const navigate = useNavigate();
 
@@ -33,7 +36,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem('user');
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
     setAnchorElUser(null);
   };
 
@@ -46,7 +49,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-secondary navbar-light fixed-top bg-light">
+      <nav className="navbar navbar-expand-lg bg-secondary  fixed-top ">
         <div className="container mt-lg-4 bg-white rounded p-lg-3 shadow-sm">
           <Link className="navbar-brand animate__animated animate__bounce" to="#">
             P7P
@@ -84,11 +87,11 @@ const Navbar = () => {
                   Dashboard
                 </Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <span className="nav-link active disabled" aria-current="page">
                   Button
                 </span>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <Link
                   className={`nav-link ${activeLink === 'product' ? 'active' : ''}`}
@@ -102,20 +105,13 @@ const Navbar = () => {
             </ul>
             <form className="d-flex" role="search">
               <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
-                <Tooltip title="Cart">
-                  <IconButton
-                    color="inherit"
-                  >
-                    <Badge badgeContent={cartItemCount} color="error">
-                      <ShoppingCartIcon />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
+              
                 <Tooltip title="Open account">
                   <IconButton onClick={handleOpenUserMenu}
 
                    sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp" src={profile_img} />
+                    <FaCartShopping /> <span style={{fontSize:'14px'}}>{count}</span>
                   </IconButton>
                 </Tooltip>
                 <Menu

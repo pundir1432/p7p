@@ -14,7 +14,7 @@ const Account = () => {
 
   return (
     <>
-      <h1>Account Page</h1>
+      <h1 className='mt-lg-5'>Account Page</h1>
       <h2>Selected Products:</h2>
       <div>
         {cartItems.length > 0 ? (
