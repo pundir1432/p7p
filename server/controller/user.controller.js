@@ -49,7 +49,7 @@ const login = async (req, res) => {
         return res.status(401).json({ message: "Invalid credentials", status: 401 });
       }
     
-      return res.status(200).json({ message: "Login successfull", user: {_id: user._id, name: user.email },});
+      return res.status(200).json({ message: "Login successfull", user: {_id: user._id, email: user.email,password: user.password },});
     } catch (error) {
       return res.status(500).json({ message: error.message, status: 500 });
     }

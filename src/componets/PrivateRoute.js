@@ -1,9 +1,20 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
-const PrivateRoute = () => {
-  const authToken = localStorage.getItem('authToken');
-  return authToken ? <Outlet /> : <Navigate to="/" />;
-};
+const ProtectedRoute = (props) => {
+    const {Component}=props
+    const navigate=useNavigate()
 
-export default PrivateRoute;
+useEffect(()=>{
+    let login= sessionStorage.getItem('user')
+    if(!login){
+navigate('/product')
+    }
+},[])
+
+  return (
+    <div><Component/></div>
+  )
+}
+
+export default ProtectedRoute

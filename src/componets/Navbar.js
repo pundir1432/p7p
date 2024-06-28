@@ -1,5 +1,4 @@
-// src/components/Navbar.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -9,14 +8,15 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import { profile_img } from '../assets/image';
-import { useAuth } from '../componets/AuthContext';
 import 'animate.css';
+import '../style/Navbar.css';
 
 const Navbar = () => {
   const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [activeLink, setActiveLink] = useState('');
+
   const navigate = useNavigate();
-  const { logout } = useAuth();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -27,32 +27,69 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    logout();
-    navigate('/');
+    sessionStorage.removeItem('user');
+    navigate('/login', { replace: true });
     setAnchorElUser(null);
+  };
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
   };
 
   return (
     <>
-      <nav className="navbar  navbar-expand-lg bg-secondary navbar-light fixed-top bg-ligt">
-        <div className="container mt-lg-4 bg-white p-lg-3">
-          <Link className="navbar-brand animate__animated animate__bounce" to="#">P7P</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <nav className="navbar navbar-expand-lg bg-secondary navbar-light fixed-top bg-light">
+        <div className="container mt-lg-4 bg-white rounded p-lg-3 shadow-sm">
+          <Link className="navbar-brand animate__animated animate__bounce" to="#">
+            P7P
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav mx-auto">
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/home">Home</Link>
+                <Link
+                  className={`nav-link ${activeLink === 'home' ? 'active' : ''}`}
+                  aria-current="page"
+                  to="/home"
+                  onClick={() => handleLinkClick('home')}
+                >
+                  Home
+                </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/dashboard">Dashboard</Link>
+                <Link
+                  className={`nav-link ${activeLink === 'dashboard' ? 'active' : ''}`}
+                  aria-current="page"
+                  to="/dashboard"
+                  onClick={() => handleLinkClick('dashboard')}
+                >
+                  Dashboard
+                </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/button" disabled>Button</Link>
+                <span className="nav-link active disabled" aria-current="page">
+                  Button
+                </span>
               </li>
               <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/product">Product</Link>
+                <Link
+                  className={`nav-link ${activeLink === 'product' ? 'active' : ''}`}
+                  aria-current="page"
+                  to="/product"
+                  onClick={() => handleLinkClick('product')}
+                >
+                  Product
+                </Link>
               </li>
             </ul>
             <form className="d-flex" role="search">
