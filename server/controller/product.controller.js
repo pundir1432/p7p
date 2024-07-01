@@ -6,7 +6,7 @@ const createProduct = async (req, res) => {
       console.log('Request Files:', req.files);
       
       const { name,description,price,categoryId } = req.body;
-      const images = req.files;
+      const image = req.files;
   
       if (!images || images.length === 0) {
         return res.status(400).json({ status: 400, message: "No images uploaded" });
@@ -17,7 +17,7 @@ const createProduct = async (req, res) => {
         return res.status(400).json({ status: 400, message: "Product with the same name already exists" });
       }
   
-      const imageNames = images.map(image => image.originalname);
+      const imageNames = image.originalname;
       const result = await productModel.create({ name,description,price,categoryId , image: imageNames });
       return res.status(200).json({ status: 200, message: "Product added successfully", response: result });
     } catch (error) {

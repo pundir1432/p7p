@@ -2,6 +2,7 @@ import React from 'react';
 import { Offcanvas } from 'react-bootstrap';
 import '../../style/Product.css'; // Import the custom CSS
 import { FaCartShopping } from 'react-icons/fa6';
+import config from '../../config';
 
 const AddModal = ({ show, handleClose, products }) => {
   return (
@@ -20,7 +21,12 @@ const AddModal = ({ show, handleClose, products }) => {
               
               <div key={i} className="card bg-white rounded-3 shadow text-center p-3" style={{ height: '200px',width:'200px' }}>
                 <div className="card-body  py-1">
-                  <img src={item.image[0]} alt="" style={{ height: '40px' }} />
+                <img
+                  src={`${config.IMAGE_URL}${item.image}`}
+                  // src={'../../../upload/AdobeStock_229428578-ide-fish.jpg'}
+                  className="object-fit-cover"
+                  style={{  height: "50px" }}
+                />
                   <h6>{item.name}</h6>
                   <p>{item.price}$</p>
                   <p>{item.description.slice(0, 20)}</p>
