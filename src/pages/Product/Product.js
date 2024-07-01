@@ -4,11 +4,12 @@ import { FaHeartCircleCheck } from 'react-icons/fa6';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../style/Product.css';
 import 'animate.css';
-import AddModal from './Addmodal';
 import { fetchProductData, addToCart, incrementCount } from '../../redux/Product/action';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import config from '../../config';
+import { Spinner } from 'react-bootstrap';
+import Cart from '../Cart/Cart';
 const fallbackImage = 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
 
 const Product = () => {
@@ -54,13 +55,11 @@ const Product = () => {
   };
 
   const categories = [
-    { label: 'Clothes', year: 1994 },
-    { label: 'Shoes', year: 1972 },
-    { label: 'Watch', year: 1974 },
-    { label: 'Goggles', year: 2008 },
-    { label: 'Camera', year: 1957 },
+    { label: 'Electronic', year: 1994 },
+    { label: 'Fashion', year: 1972 },
+    { label: 'Grocery', year: 1974 },
     { label: 'Mobile', year: 1993 },
-    { label: 'Airbuds', year: 1994 },
+    { label: 'Home & Furniture', year: 1993 },
   ];
 
   return (
@@ -83,36 +82,48 @@ const Product = () => {
         </div>
       </div>
       <div className="row">
-        {products.map((item, i) => (
-          <div className="col-3 p-3" key={item._id}>
-            <div className="card bg-white rounded-3 shadow text-center p-3" style={{ height: '320px' }}>
-              <div className="card-body mx-auto py-3">
-              {item.image && (
-        <img
-          src={`${config.IMAGE_URL}${item.image}`}
-          alt={item.name}
-          className="object-fit-cover"
-          style={{ height: "80px" }}
-        />
-      )}
-                <h6>{item.name}</h6>
-                <p>Price {item.price}$</p>
-                <p>{item.description.slice(0, 20)}</p>
-                <div className="card-btn">
-                  <button className="btn bg-none text-white" onClick={() => addProductHandle(item)}>
-                    Add
-                  </button>
-                  <span className="ms-5" onClick={() => toggleLike(i, item)}>
-                    {item.liked ? <FaHeart className="text-danger fs-5" /> : <FaHeartCircleCheck />}
-                  </span>
+      {products.length === 0 ? (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      ) : (
+        products.map((item, i) => (
+          <div className="col-2 p-3" key={item._id}>
+            <div
+              className="card py-0 p-0 rounded-3 shadow text-center "
+              style={{ height: 'auto' }}
+             
+            >
+              <div className="product-body p-0">
+            {item.image && (
+                  <img
+                    src={`${config.IMAGE_URL}${item.image}`}
+                    alt={item.name}
+                    className="object-fit-cover"
+                    style={{ height: '150px', width: '190px', objectFit: 'contain' }}
+                    onClick={() => addProductHandle(item)}
+                  />
+                )}
+              <h2>{item.name}</h2>
+              <p>Price {item.price}</p>
+              <div className="div">
+                <div className="description d-flex justify-content-center">
+                  <p>{item.description}</p>
+                  <span className="ms-5" onClick={(e) => { e.stopPropagation(); toggleLike(i, item); }}>
+                  {item.liked ? <FaHeart className="text-danger fs-5" /> : <FaHeartCircleCheck />}
+                </span>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
 
-      <AddModal show={showModal} handleClose={toggleModal} products={selectedProducts} />
+            </div>
+          
+          </div>
+        ))
+      )}
+    </div>
+
+      <Cart show={showModal} handleClose={toggleModal} products={selectedProducts} />
       {toast && (
         <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: '11' }}>
           <div id="liveToast" className="toast show" role="alert" aria-live="assertive" aria-atomic="true">

@@ -3,13 +3,13 @@ const productModel = require('../model/product.model')
 const createProduct = async (req, res) => {
     try {
       console.log('Request Body:', req.body);
-      console.log('Request Files:', req.files);
+      console.log('Request Files:', req.file);
       
       const { name,description,price,categoryId } = req.body;
       const image = req.files;
   
-      if (!images || images.length === 0) {
-        return res.status(400).json({ status: 400, message: "No images uploaded" });
+      if (!image || image.length === 0) {
+        return res.status(400).json({ status: 400, message: "No image uploaded" });
       }
   
       const existingProduct = await productModel.findOne({ name });
