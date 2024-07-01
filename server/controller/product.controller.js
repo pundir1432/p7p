@@ -5,20 +5,20 @@ const createProduct = async (req, res) => {
       console.log('Request Body:', req.body);
       console.log('Request Files:', req.files);
       
-      const { title,description,price,categoryId } = req.body;
+      const { name,description,price,categoryId } = req.body;
       const images = req.files;
   
       if (!images || images.length === 0) {
         return res.status(400).json({ status: 400, message: "No images uploaded" });
       }
   
-      const existingProduct = await productModel.findOne({ title });
+      const existingProduct = await productModel.findOne({ name });
       if (existingProduct) {
         return res.status(400).json({ status: 400, message: "Product with the same name already exists" });
       }
   
       const imageNames = images.map(image => image.originalname);
-      const result = await productModel.create({ title,description,price,categoryId , image: imageNames });
+      const result = await productModel.create({ name,description,price,categoryId , image: imageNames });
       return res.status(200).json({ status: 200, message: "Product added successfully", response: result });
     } catch (error) {
       console.error('Error:', error);
@@ -26,15 +26,28 @@ const createProduct = async (req, res) => {
     }
 };
 
-const getProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
-    const products = await productModel.find({});
-    return res.status(200).json({ status: 200, message: "Products retrieved successfully", response: products });
+      const { status } = req.query;
+      const isActive = status ? status === 'true' : null;
+
+      if (isActive === true) {
+          const productActive = await productModel.find({ status: true }).sort({ createdAt: -1 });
+           totalItems = await productModel.countDocuments({ status: true });
+          return res.status(200).json({ status: 200, message: "Active products", response: productActive, totalItems });
+      } else if (isActive === false) {
+          const productInactive = await productModel.find({ status: false }).sort({ createdAt: -1 });
+          totalItems = await productModel.countDocuments({ status: false });
+          return res.status(200).json({ status: 200, message: "Inactive products", response: productInactive, totalItems });
+      } else {
+          const products = await productModel.find().sort({ createdAt: -1 });
+          totalItems = await productModel.countDocuments();
+          return res.status(200).json({ status: 200, message: "Products data fetched successfully", response: products, totalItems });
+      }
   } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ status: 500, message: error.message });
-  }
-}
+      return res.status(500).json({ status: 500, message: error.message });
+  };
+};
 
 const getOneProduct = async(req, res) => {
   try {
@@ -60,7 +73,7 @@ const deleteProduct = async(req, res)=>{
 
 module.exports = {
     createProduct,
-    getProducts,
+    getAllProducts,
     deleteProduct,
     getOneProduct
 };
