@@ -3,7 +3,7 @@ const productModel = require('../model/product.model')
 const createProduct = async (req, res) => {
     try {
       console.log('Request Body:', req.body);
-      console.log('Request Files:', req.file);
+      console.log('Request Files:', req.file );
       
       const { name,description,price,categoryId } = req.body;
       const image = req.files;
