@@ -1,18 +1,19 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { productApi } from './api';
-import { productFailure, productLoading, productSuccess } from './action';
+import { productDataData, productError } from './action';
+import { PRODUCT_LOADING } from './constaint';
 
 function* fetchProducts() {
   try {
     const data = yield call(productApi);
-    yield put(productSuccess(data));
+    yield put(productDataData(data));
   } catch (error) {
-    yield put(productFailure(error.message));
+    yield put(productError(error.message));
   }
 }
 
 function* productSaga() {
-  yield takeLatest(productLoading, fetchProducts);
+  yield takeLatest(PRODUCT_LOADING, fetchProducts);
 }
 
 export default productSaga;

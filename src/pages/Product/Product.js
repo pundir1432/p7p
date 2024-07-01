@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../../style/Product.css';
 import 'animate.css';
 import AddModal from './Addmodal';
-import { productLoading, addToCart, incrementCount } from '../../redux/Product/action';
+import { productDataData, addToCart, incrementCount, fetchProductData } from '../../redux/Product/action';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Tooltip } from 'react-bootstrap';
 
 const Product = () => {
   const dispatch = useDispatch();
-  const { data: productData, loading } = useSelector(state => state.product);
+  const productData = useSelector(state => state.product.data);
 
   const [products, setProducts] = useState([]);
   const [toast, setToast] = useState(false);
@@ -30,12 +30,9 @@ const Product = () => {
     setShowModal(true);
   };
 
-  // Fetch products only once when the component mounts
   useEffect(() => {
-    if (productData.length === 0) {
-      dispatch(productLoading());
-    }
-  }, [dispatch, productData.length]);
+    dispatch(fetchProductData());
+  }, [dispatch]);
 
   useEffect(() => {
     if (productData.length > 0) {
@@ -88,32 +85,25 @@ const Product = () => {
         </div>
       </div>
       <div className="row">
-        {loading ? (
-          <div className="d-flex mt-lg-5 justify-content-center">
-            <div className="spinner-border mt-lg-5" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        ) : (
-          products.map((item, i) => (
-            <div className="col-3 p-3" key={item._id}>
-              <div className="card bg-white rounded-3 shadow text-center p-3" style={{ height: '320px' }}>
-                <div className="card-body mx-auto py-3">
-                  <img src={item.image[0]} alt="" style={{ height: '80px' }} />
-                  <Tooltip title={item.title}>
-                    <h4>{item.title.slice(0, 10)}</h4>
-                  </Tooltip>
-                  <div className="card-btn">
-                    <button className="btn bg-none text-white" onClick={() => addProductHandle(item)}>Add</button>
-                    <span className='ms-5' onClick={() => toggleLike(i, item)}>
-                      {item.liked ? <FaHeart className='text-danger fs-5' /> : <FaHeartCircleCheck />}
-                    </span>
-                  </div>
+        {products && products.map((item, i) => (
+          <div className="col-3 p-3" key={item._id}>
+            <div className="card bg-white rounded-3 shadow text-center p-3" style={{ height: '320px' }}>
+              <div className="card-body mx-auto py-3">
+                <img src={item.image[0]} alt="" style={{ height: '80px' }} />
+                <h6>{item.name}</h6>
+                  <p>{item.price}$</p>
+                  <p>{item.description.slice(0, 20)}</p>
+
+                <div className="card-btn">
+                  <button className="btn bg-none text-white" onClick={() => addProductHandle(item)}>Add</button>
+                  <span className='ms-5' onClick={() => toggleLike(i, item)}>
+                    {item.liked ? <FaHeart className='text-danger fs-5' /> : <FaHeartCircleCheck />}
+                  </span>
                 </div>
               </div>
             </div>
-          ))
-        )}
+          </div>
+        ))}
       </div>
       <AddModal show={showModal} handleClose={toggleModal} products={selectedProducts} />
       {toast && (
