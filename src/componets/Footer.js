@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer fixed-ottom">
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-12 col-lg-4 ">

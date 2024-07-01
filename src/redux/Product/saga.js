@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { productLoading, productSuccess, productFailure } from './action';
 import { productApi } from './api';
+import { productFailure, productLoading, productSuccess } from './action';
 
 function* fetchProducts() {
   try {

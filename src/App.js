@@ -11,6 +11,7 @@ import Signup from './componets/login/Signup';
 import Login from './componets/login/Login';
 import { AuthProvider } from './componets/AuthContext';
 import Account from './pages/Account/Account';
+import './App.css'
 
 function App() {
   return (

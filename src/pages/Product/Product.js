@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { FaHeartCircleCheck } from "react-icons/fa6";
+import { FaHeart } from 'react-icons/fa';
+import { FaHeartCircleCheck } from 'react-icons/fa6';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../style/Product.css';
 import 'animate.css';
 import AddModal from './Addmodal';
-import { productLoading,addToCart ,incrementCount} from '../../redux/Product/action';
+import { productLoading, addToCart, incrementCount } from '../../redux/Product/action';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Tooltip } from 'react-bootstrap';
@@ -30,11 +30,12 @@ const Product = () => {
     setShowModal(true);
   };
 
+  // Fetch products only once when the component mounts
   useEffect(() => {
-    dispatch(productLoading());
-  }, [dispatch]);
-
- 
+    if (productData.length === 0) {
+      dispatch(productLoading());
+    }
+  }, [dispatch, productData.length]);
 
   useEffect(() => {
     if (productData.length > 0) {
@@ -43,11 +44,10 @@ const Product = () => {
     }
   }, [productData]);
 
-  const toggleLike = (index,product) => {
+  const toggleLike = (index, product) => {
     dispatch(addToCart(product));
-
     setProducts(prevProducts => {
-      const updatedProducts =  [...prevProducts];
+      const updatedProducts = [...prevProducts];
       updatedProducts[index] = {
         ...updatedProducts[index],
         liked: !updatedProducts[index].liked,
@@ -55,7 +55,7 @@ const Product = () => {
       return updatedProducts;
     });
     setToast(true);
-    setTimeout(() => setToast(false), 5000); 
+    setTimeout(() => setToast(false), 5000);
   };
 
   const top100Films = [
@@ -69,7 +69,7 @@ const Product = () => {
   ];
 
   return (
-    <div className="container-fluid product-body bg-secondary">
+    <div className="container-fluid product-body">
       <div className="row">
         <div className="col-6 text-end">
           <h1 className="mt-lg-5 me-0 text-white product-heading animate__animated animate__bounce">
@@ -96,24 +96,18 @@ const Product = () => {
           </div>
         ) : (
           products.map((item, i) => (
-            <div className="col-3 p-3" key={i}>
+            <div className="col-3 p-3" key={item._id}>
               <div className="card bg-white rounded-3 shadow text-center p-3" style={{ height: '320px' }}>
                 <div className="card-body mx-auto py-3">
-                  <img src={item.image} alt="" style={{ height: '80px' }} />
+                  <img src={item.image[0]} alt="" style={{ height: '80px' }} />
                   <Tooltip title={item.title}>
-                  <h4>{item.title.slice(0, 10)}</h4>
-
+                    <h4>{item.title.slice(0, 10)}</h4>
                   </Tooltip>
-                  <p>{item.price}$</p>
-                  <p>{item.description.slice(0, 60)}</p>
                   <div className="card-btn">
-                  <button className="btn bg-none text-white" onClick={() => addProductHandle(item)}>Add</button>
-
-                    {/* <span className="ms-5 fs-4" onClick={() => toggleLike(item)}> <FaHeartCircleCheck /></span> */}
-                    <span className='ms-5' onClick={() => toggleLike(i,item)}>
-                      {item.liked ? <FaHeart  className='text-danger fs-5' /> : <FaHeartCircleCheck />}
-                      </span>
-                  
+                    <button className="btn bg-none text-white" onClick={() => addProductHandle(item)}>Add</button>
+                    <span className='ms-5' onClick={() => toggleLike(i, item)}>
+                      {item.liked ? <FaHeart className='text-danger fs-5' /> : <FaHeartCircleCheck />}
+                    </span>
                   </div>
                 </div>
               </div>

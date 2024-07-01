@@ -49,7 +49,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-secondary  fixed-top ">
+      <nav className="navbar navbar-expand-lg   fixed-top ">
         <div className="container mt-lg-4 bg-white rounded p-lg-3 shadow-sm">
           <Link className="navbar-brand animate__animated animate__bounce" to="#">
             P7P
