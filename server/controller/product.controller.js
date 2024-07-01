@@ -5,7 +5,7 @@ const createProduct = async (req, res) => {
       console.log('Request Body:', req.body);
       console.log('Request Files:', req.files);
       
-      const { title } = req.body;
+      const { title,description,price,categoryId } = req.body;
       const images = req.files;
   
       if (!images || images.length === 0) {
@@ -18,7 +18,7 @@ const createProduct = async (req, res) => {
       }
   
       const imageNames = images.map(image => image.originalname);
-      const result = await productModel.create({ title, image: imageNames });
+      const result = await productModel.create({ title,description,price,categoryId , image: imageNames });
       return res.status(200).json({ status: 200, message: "Product added successfully", response: result });
     } catch (error) {
       console.error('Error:', error);

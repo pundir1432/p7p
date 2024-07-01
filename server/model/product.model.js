@@ -3,23 +3,27 @@ const { Schema } = mongoose;
 
 const productModel = new Schema(
     {
-        title: {
+        categoryId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "category",
+        },
+        name: {
             type: String,
-            enum: [
-                "clothes",
-                "mobile",
-                "Shoes",
-                "Camera",
-                "earbuds",
-                "goggles",
-                "watch"
-            ],
-            required: true
+            // required: true
         },
         image: {
             type: [String],
             required: true,
-        }
+        },
+        price: {
+            type: Number,
+            required: true,
+        },
+        description:{
+            type: String,
+            required: true,
+        },
+
     },
     { versionKey: false, timestamps: true }
 );
