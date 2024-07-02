@@ -1,14 +1,20 @@
+// saga.js
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { productApi } from './api';
-import { productDataData, productError } from './action';
-import { PRODUCT_LOADING } from './constaint';
+import axios from 'axios';
+import { PRODUCT_LOADING, PRODUCT_SUCCESS, PRODUCT_ERROR } from './constaint';
+import { PRODUCT_URL } from '../../helper/api/apiEndPoint'; // Ensure this path is correct
+
+export const productApi = async () => {
+  const response = await axios.get(PRODUCT_URL);
+  return response.data.response;
+};
 
 function* fetchProducts() {
   try {
     const data = yield call(productApi);
-    yield put(productDataData(data));
+    yield put({ type: PRODUCT_SUCCESS, payload: data });
   } catch (error) {
-    yield put(productError(error.message));
+    yield put({ type: PRODUCT_ERROR, payload: { error: error.message } });
   }
 }
 
