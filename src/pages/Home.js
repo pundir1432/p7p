@@ -16,11 +16,11 @@ const Home = () => {
     };
   }, []);
   return (
-    <div className="container-fluid p-0 mt-lg-5 bg-secondary">
-      <section className="services bg-secondary text-center py-5 p-3">
+    <div className="container-fluid p-0 mt-lg-5 ">
+      <section className="services  text-center py-5 p-3">
        <div className="title w-50 mx-auto">
-       <h1 className="mb-4 mt-lg-5">What You Get with Our Services</h1>
-        <p className="mb-5">
+       <h1 className="mb-4 mt-lg-5 text-white">What You Get with Our Services</h1>
+        <p className="mb-5 text-white">
           We craft extremely responsive websites that are tailored specifically to take care of your e-firm be it educational, Real Estate, Hotels & SPA websites and others as well. In a nutshell? We’ll help you get the best.
           Below is the list of websites that we build exclusively meeting our client’s demand:
         </p>

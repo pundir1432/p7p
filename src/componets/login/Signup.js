@@ -33,12 +33,12 @@ const Signup = () => {
   };
 
   return (
-    <Container fluid className='bg-light'>
-      <Row>
-        <Col lg={12} md={12} className='mt-lg-5 d-flex justify-content-center p-2' style={{ height: '93vh' }}>
-          <div className="form-signup p-5 d-flex justify-content-center" style={{ height: '100vh', maxHeight: '600px' }}>
-            <div className="login w-100 p-0 me-5">
-              <h2 className='text-center text-white animate__animated animate__bounce'>SignUp</h2>
+    <Container fluid className='bg-img-img'>
+      <Row className='mx-auto'>
+        <Col lg={12} md={12} className='mt-lg-4  d-flex justify-content-end p-2' style={{ height: '93vh' }}>
+          <div className="form-signup bg-white p-5 d-flex justify-content-center me-5" style={{ height: '100vh', maxHeight: '600px' }}>
+            <div className="login w-100 p-0  ">
+              <h2 className='text-center text-dark animate__animated animate__bounce'>SignUp</h2>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group controlId="formEmail">
                   <TextField 

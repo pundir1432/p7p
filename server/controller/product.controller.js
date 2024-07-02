@@ -6,7 +6,7 @@ const createProduct = async (req, res) => {
       console.log('Request Files:', req.file );
       
       const { name,description,price,categoryId } = req.body;
-      const image = req.file; 
+      const image = req.files;
   
       if (!image || image.length === 0) {
         return res.status(400).json({ status: 400, message: "No image uploaded" });

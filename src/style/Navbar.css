@@ -9,7 +9,7 @@
 }
 
 .navbar .nav-link:active {
-    color: #C37A47;
+    color: black;
     animation: clickAnimation 0.3s;
 }
 
@@ -28,7 +28,7 @@
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: #C37A47;
+    background-color: #00CCFF;
     transform-origin: bottom right;
     transition: transform 0.25s ease-out;
 }
@@ -40,7 +40,7 @@
 
 /* Active link styling */
 .navbar .nav-link.active {
-    background-color: #C37A47;
+    background-color: #00CCCC;
     color: white;
     border-radius: 4px;
     padding: 0.5rem 1rem;

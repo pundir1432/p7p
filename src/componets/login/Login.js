@@ -28,17 +28,14 @@ const Login = () => {
  
 
   return (
-      <Container fluid className='bg-light'>
+      <Container fluid className='bg-img-img'>
         <Row>
-       <Col lg={12} md={12}>
-        <Row>
-        <Col lg={6} md={6} className='mt-lg-5 d-flex justify-content-end p-0'>
-          <img className='login-img' src={logi_img} alt="" />
-        </Col>
-          <Col lg={6} md={6} className='mt-lg-5 d-flex p-0 justify-content-start ' style={{ height: '99vh' }}>
-            <div className="  form-login p-5 d-flex justify-content-center" style={{ height: '100vh', maxHeight: '600px' }}>
+   
+      
+          <Col lg={12} md={12} className=' d-flex p-0 justify-content-end  ' style={{ height: '99vh' }}>
+            <div className=" bg-white form-login p-5 d-flex justify-content-center me-5" style={{ height: '100vh', maxHeight: '700px' }}>
               <div className="login w-100 p-0 me-2">
-                <h2 className='text-center text-white animate__animated animate__bounce'>SignIn</h2>
+                <h2 className='text-center text-dark animate__animated animate__bounce'>SignIn</h2>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Form.Group controlId="formEmail">
                     <TextField 
@@ -84,8 +81,6 @@ const Login = () => {
               </div>
             </div>
           </Col>
-        </Row>
-       </Col>
         </Row>
       </Container>
   );
