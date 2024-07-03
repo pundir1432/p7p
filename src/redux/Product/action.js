@@ -3,10 +3,13 @@ import {
   PRODUCT_LOADING,
   PRODUCT_SUCCESS,
   PRODUCT_ERROR,
+  LIKE_TO_CART,
+  REMOVE_LIKE_FROM_CART,
+  INCREMENT_COUNT,
+  SELECT_CATEGORY,
   ADD_TO_CART,
   REMOVE_FROM_CART,
-  INCREMENT_COUNT,
-  SELECT_CATEGORY
+  CLEAR_CART
 } from './constaint';
 
 export const fetchProductData = () => ({
@@ -23,13 +26,13 @@ export const productError = (error) => ({
   payload: { error },
 });
 
-export const addToCart = (data) => ({
-  type: ADD_TO_CART,
+export const likeToCart = (data) => ({
+  type: LIKE_TO_CART,
   payload: data,
 });
 
-export const removeFromCart = (dataId) => ({
-  type: REMOVE_FROM_CART,
+export const removeLikeFromCart = (dataId) => ({
+  type: REMOVE_LIKE_FROM_CART,
   payload: dataId,
 });
 
@@ -40,4 +43,17 @@ export const incrementCount = () => ({
 export const selectCategory = (category) => ({
   type: SELECT_CATEGORY,
   payload: category,
+});
+export const addToCart = (product) => ({
+  type: ADD_TO_CART,
+  payload: product
+});
+
+export const removeFromCart = (productId) => ({
+  type: REMOVE_FROM_CART,
+  payload: productId
+});
+
+export const clearCart = () => ({
+  type: CLEAR_CART
 });

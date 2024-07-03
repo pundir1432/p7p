@@ -12,6 +12,7 @@ import Login from './componets/login/Login';
 import { AuthProvider } from './componets/AuthContext';
 import Account from './pages/Account/Account';
 import './App.css'
+import Cart from './pages/Cart/Cart';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function Main() {
             <Route path="/account" element={<ProtectedRoute Component={Account} />} />
             <Route path="/dashboard" element={<ProtectedRoute Component={Dashboard} />} />
             <Route path="/button" element={<ProtectedRoute Component={ButtonSite} />} />
+            <Route path="/cart" element={<ProtectedRoute Component={Cart} />} />
          
           </Routes>
       {!hideNavbarRoutes.includes(location.pathname) && <Footer />}

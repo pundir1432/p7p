@@ -17,4 +17,20 @@
     height: 100%;
     border-radius: 0;
   }
+  /* cart css */
+  .zoom-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .zoom-image {
+    transition: transform 0.3s ease, transform-origin 0.3s ease;
+  }
+  
+  .zoom-container:hover .zoom-image {
+    transform: scale(1.5);
+    cursor: zoom-in;
+  }
+  
+  
   
