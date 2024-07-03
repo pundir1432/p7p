@@ -1,37 +1,21 @@
-const passport = require('passport'); 
-const GoogleStrategy = require('passport-google-oauth2').Strategy; 
-const googleAuthModel = require("../model/gooleAuth.model")
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
+require("dotenv").config();
 
-passport.serializeUser((user , done) => { 
-	done(null , user); 
-}) 
-passport.deserializeUser(function(user, done) { 
-	done(null, user); 
-}); 
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
 
-passport.use(new GoogleStrategy({ 
-	clientID:process.env.CLIENT_ID, // Your Credentials here. 
-	clientSecret:process.env.CLIENT_SECRET,
-	callbackURL:"http://localhost:8090/auth/google/callback", 
-	passReqToCallback:true
-}, 
-async function(request, accessToken, refreshToken, profile, done){ 
-	console.log("profile: " + profile);
-	try {
-		let userdetail = await googleAuthModel.findOne({googleId:profile.id})
-		if(!userdetail) {
-			userdetail = new googleAuthModel({
-                googleId: profile.id,
-                displayName: profile.displayName,
-                email: profile.emails[0].value
-            })
-            await userdetail.save()
-		}
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});
 
-        return done(null, userdetail); 
-		
-	} catch (error) {
-		return done(null, profile); 
-	}
-} 
-));
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.HOST + process.env.PORT + "/auth/google/callback"
+}, (accessToken, refreshToken, profile, done) => {
+    return done(null, profile);
+}));
+
+module.exports = passport;

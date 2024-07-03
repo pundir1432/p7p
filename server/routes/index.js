@@ -10,5 +10,6 @@ module.exports = function (app) {
     require("./user.routes")(app)
     require("./product.routes")(app)
     require("./category.routes")(app)
+    require("./googleAuth.routes")(app)
     
 }
