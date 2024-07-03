@@ -1,21 +1,18 @@
 const passport = require('passport');
-require('../middleware/passport');
-
-const googleAuthController = require('../controller/googleAuth.controller');
+const userController = require('../controller/googleAuth.controller');
 
 module.exports = function Route(app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.get('/', googleAuthController.loadAuth);
+    app.get('/', userController.loadAuth);
 
     app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+
     app.get('/auth/google/callback',
-        passport.authenticate('google', {
-            successRedirect: 'http://localhost:3000/product',
-            failureRedirect: '/failure'
-        })
+        passport.authenticate('google', { successRedirect: '/success', failureRedirect: '/failure' })
     );
-    app.get('/success', googleAuthController.successGoogleLogin);
-    app.get('/failure', googleAuthController.failureGoogleLogin);
+
+    app.get('/success', userController.successGoogleLogin);
+    app.get('/failure', userController.failureGoogleLogin);
 };
