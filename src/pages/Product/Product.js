@@ -1,26 +1,25 @@
 // Product.js
+
 import React, { useEffect, useState } from 'react';
 import { FaShoppingCart, FaHeart } from 'react-icons/fa';
 import { FaHeartCircleCheck } from 'react-icons/fa6';
 import { useDispatch, useSelector } from 'react-redux';
 import '../../style/Product.css';
 import 'animate.css';
-import { fetchProductData, addToCart, incrementCount, selectCategory } from '../../redux/Product/action';
+import { fetchProductData, incrementCount, selectCategory, addToCart, likeToCart } from '../../redux/Product/action';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import config from '../../config';
 import { Spinner } from 'react-bootstrap';
-import Cart from '../Cart/Cart';
 
 const Product = () => {
   const dispatch = useDispatch();
   const productData = useSelector((state) => state.product.filteredData);
   const selectedCategory = useSelector((state) => state.product.selectedCategory);
+  const [addedProducts, setAddedProducts] = useState([]);
 
   const [products, setProducts] = useState([]);
   const [toast, setToast] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState([]);
 
   useEffect(() => {
     dispatch(fetchProductData());
@@ -33,16 +32,17 @@ const Product = () => {
     }
   }, [productData]);
 
-  const toggleModal = () => setShowModal((prev) => !prev);
-
-  const addProductHandle = (product) => {
-    dispatch(incrementCount());
-    setSelectedProducts((prev) => [...prev, product]);
-    toggleModal();
+  const addProductToCart = (productid) => {
+    if (!addedProducts.includes(productid)) {
+      setAddedProducts([...addedProducts, productid]);
+      dispatch(incrementCount());
+      dispatch(addToCart(productid));
+    } else {
+      alert('This product is already added to the cart.');
+    }
   };
 
-  const toggleLike = (index, product) => {
-    dispatch(addToCart(product));
+  const toggleLike = (index,item) => {
     setProducts((prevProducts) => {
       const updatedProducts = [...prevProducts];
       updatedProducts[index] = {
@@ -51,24 +51,22 @@ const Product = () => {
       };
       return updatedProducts;
     });
+    dispatch(likeToCart(item))
     setToast(true);
     setTimeout(() => setToast(false), 5000);
   };
 
   const categories = [
     { label: 'All', value: 'All' },
-    { label: 'Main', value: 'Main' }, // Add Main category
     { label: 'Electronic', value: 'Electronic' },
     { label: 'Fashion', value: 'Fashion' },
     { label: 'Grocery', value: 'Grocery' },
     { label: 'Home & Furniture', value: 'Home & Furniture' },
   ];
-  
 
   const handleCategorySelect = (event, value) => {
     if (value) {
-      const categoryToDispatch = value.value === 'Main' ? 'Electronic' : value.value;
-      dispatch(selectCategory(categoryToDispatch));
+      dispatch(selectCategory(productData.categoryId));
     }
   };
 
@@ -81,7 +79,7 @@ const Product = () => {
           </h1>
         </div>
         <div className="col-6 d-flex justify-content-end">
-        <Autocomplete
+          <Autocomplete
             disablePortal
             className="mt-lg-4"
             id="combo-box-demo"
@@ -115,19 +113,17 @@ const Product = () => {
                       src={`${config.IMAGE_URL}${item.image}`}
                       alt={item.name}
                       className="object-fit-cover"
-                      style={{ height: '150px', width: '190px', objectFit: 'contain' }}
-                      onClick={() => addProductHandle(item)}
+                      style={{ height: '150px', width: '190px', objectFit: 'contain', cursor: 'pointer' }}
+                      onClick={() => addProductToCart(item)}
                     />
                   )}
                   <h2>{item.name}</h2>
-                  <p>Price {item.price}</p>
-                  <div className="div">
-                    <div className="description d-flex justify-content-center">
-                      <p>{item.description}</p>
-                      <span className="ms-5" onClick={(e) => { e.stopPropagation(); toggleLike(i, item); }}>
-                        {item.liked ? <FaHeart className="text-danger fs-5" /> : <FaHeartCircleCheck />}
-                      </span>
-                    </div>
+                  <p>Price: ${item.price}</p>
+                  <div className="description d-flex justify-content-center">
+                    <p>{item.description}</p>
+                    <span className="ms-5" onClick={() => toggleLike(i,item)}>
+                      {item.liked ? <FaHeart className="text-danger fs-5" /> : <FaHeartCircleCheck />}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -135,7 +131,6 @@ const Product = () => {
           ))
         )}
       </div>
-      <Cart show={showModal} handleClose={toggleModal} products={selectedProducts} />
       {toast && (
         <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: '11' }}>
           <div id="liveToast" className="toast show" role="alert" aria-live="assertive" aria-atomic="true">

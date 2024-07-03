@@ -111,7 +111,7 @@ const Navbar = () => {
 
                    sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp" src={profile_img} />
-                    <FaCartShopping /> <span style={{fontSize:'14px'}}>{count}</span>
+                   
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -141,6 +141,7 @@ const Navbar = () => {
                   ))}
                 </Menu>
               </Box>
+              <Link className='text-secondary nav-link' to='/cart'>  <FaCartShopping /> <span style={{fontSize:'14px'}}>{count}</span></Link>
             </form>
           </div>
         </div>
