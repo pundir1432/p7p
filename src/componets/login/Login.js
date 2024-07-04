@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { loginRequest } from '../../redux/Login/action';
-import { logi_img } from '../../assets/image';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const users = useSelector(state => state.auth.users);
-
+  const { user, loginWithRedirect, isAuthenticated, isLoading, error } = useAuth0(); // Destructure isLoading and error
+console.log(user);
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const onSubmit = async (data) => {
@@ -20,12 +19,16 @@ const Login = () => {
     reset();
   };
 
-  const loginWithGoogle = () => {
-    window.open("http://localhost:8090/auth/google/callback", "_self");
-  };
+  if (isLoading) {
+    return <div>Loading...</div>; 
+  }
 
-  if (users) {
-    return <Navigate to={'/home'} replace />;
+  if (error) {
+    return <div>Error: {error.message}</div>; 
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to={'/product'} replace />; 
   }
 
   return (
@@ -77,7 +80,7 @@ const Login = () => {
                   </Button>
                 </div>
               </Form>
-              <Button className='login-with-google-btn' onClick={loginWithGoogle}>
+              <Button className='login-with-google-btn' onClick={() => loginWithRedirect()}>
                 Sign In With Google
               </Button>
             </div>
